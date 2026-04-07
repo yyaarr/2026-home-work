@@ -1,7 +1,5 @@
 package company.vk.edu.distrib.compute;
 
-import org.junit.jupiter.api.AfterAll;
-
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -18,13 +16,7 @@ import java.util.concurrent.ThreadLocalRandom;
 abstract class TestBase {
     private static final int VALUE_LENGTH = 1024;
 
-    static final HttpClient HTTP_CLIENT = HttpClient.newHttpClient();
     public static final Duration TIMEOUT = Duration.ofSeconds(5);
-
-    @AfterAll
-    static void afterAll() {
-        HTTP_CLIENT.close();
-    }
 
     static int randomPort() {
         return ThreadLocalRandom.current().nextInt(30000, 40000);
@@ -48,33 +40,35 @@ abstract class TestBase {
         return endpoint + "/v0/entity?id=" + id;
     }
 
-    static HttpResponse<byte[]> get(String endpoint, String key)
+    protected abstract HttpClient getHttpClient();
+
+    protected HttpResponse<byte[]> get(String endpoint, String key)
             throws IOException, URISyntaxException, InterruptedException {
         HttpRequest request = HttpRequest.newBuilder()
                 .GET()
                 .uri(new URI(url(endpoint, key)))
                 .timeout(Duration.ofSeconds(2))
                 .build();
-        return HTTP_CLIENT.send(request, HttpResponse.BodyHandlers.ofByteArray());
+        return getHttpClient().send(request, HttpResponse.BodyHandlers.ofByteArray());
     }
 
-    static HttpResponse<Void> delete(String endpoint, String key)
+    protected HttpResponse<Void> delete(String endpoint, String key)
             throws IOException, URISyntaxException, InterruptedException {
         HttpRequest request = HttpRequest.newBuilder()
                 .DELETE()
                 .uri(new URI(url(endpoint, key)))
                 .timeout(TIMEOUT)
                 .build();
-        return HTTP_CLIENT.send(request, HttpResponse.BodyHandlers.discarding());
+        return getHttpClient().send(request, HttpResponse.BodyHandlers.discarding());
     }
 
-    static HttpResponse<Void> upsert(String endpoint, String key, byte[] data)
+    protected HttpResponse<Void> upsert(String endpoint, String key, byte[] data)
             throws IOException, URISyntaxException, InterruptedException {
         HttpRequest request = HttpRequest.newBuilder()
                 .PUT(HttpRequest.BodyPublishers.ofByteArray(data))
                 .uri(new URI(url(endpoint, key)))
                 .timeout(TIMEOUT)
                 .build();
-        return HTTP_CLIENT.send(request, HttpResponse.BodyHandlers.discarding());
+        return getHttpClient().send(request, HttpResponse.BodyHandlers.discarding());
     }
 }

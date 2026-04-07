@@ -1,11 +1,13 @@
 package company.vk.edu.distrib.compute;
 
+import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.Parameter;
 import org.junit.jupiter.params.ParameterizedClass;
 import org.junit.jupiter.params.provider.ArgumentsSource;
 
 import java.net.URI;
+import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 
@@ -15,8 +17,15 @@ import static org.junit.jupiter.api.Assertions.*;
 @ArgumentsSource(KVServiceFactoryArgumentsProvider.class)
 class SingleNodeTest extends TestBase {
 
+    static final HttpClient HTTP_CLIENT = HttpClient.newHttpClient();
+
     @Parameter
     KVServiceFactory kvServiceFactory;
+
+    @AfterAll
+    static void afterAll() {
+        HTTP_CLIENT.close();
+    }
 
     @Test
     void emptyKey() {
@@ -235,5 +244,10 @@ class SingleNodeTest extends TestBase {
                 storage.stop();
             }
         });
+    }
+
+    @Override
+    protected HttpClient getHttpClient() {
+        return HTTP_CLIENT;
     }
 }
