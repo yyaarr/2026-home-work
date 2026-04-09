@@ -8,6 +8,8 @@ import company.vk.edu.distrib.compute.artttnik.MyKVServiceFactory;
 import company.vk.edu.distrib.compute.ip.PopovIgorKVServiceFactoryImpl;
 import company.vk.edu.distrib.compute.gavrilova_ekaterina.InMemoryKVServiceFactory;
 import company.vk.edu.distrib.compute.b10nicle.B10nicleKVServiceFactory;
+import company.vk.edu.distrib.compute.nesterukia.file_system.NesterukiaFileSystemKVServiceFactory;
+import company.vk.edu.distrib.compute.nesterukia.in_memory.NesterukiaInMemoryKVServiceFactory;
 import company.vk.edu.distrib.compute.nihuaway00.NihuawayKVServiceFactory;
 import company.vk.edu.distrib.compute.mandesero.KVServiceFactoryImpl;
 import company.vk.edu.distrib.compute.vitos23.Vitos23KVServiceFactory;
@@ -31,7 +33,9 @@ public class KVServiceFactoryArgumentsProvider implements ArgumentsProvider {
         NihuawayKVServiceFactory.class,
         B10nicleKVServiceFactory.class,
         VredakonKVServiceFactory.class,
-        PopovIgorKVServiceFactoryImpl.class
+        PopovIgorKVServiceFactoryImpl.class,
+        NesterukiaInMemoryKVServiceFactory.class,
+        NesterukiaFileSystemKVServiceFactory.class
     );
 
     @Override
