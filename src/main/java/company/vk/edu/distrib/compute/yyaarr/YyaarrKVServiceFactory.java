@@ -8,6 +8,6 @@ import java.io.IOException;
 public class YyaarrKVServiceFactory extends KVServiceFactory {
     @Override
     protected KVService doCreate(int port) throws IOException {
-        return new YyaarrKVService(port, new YyaarrInMemoryDao());
+        return new YyaarrKVService(port, new YyaarrFileDao());
     }
 }
