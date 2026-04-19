@@ -75,7 +75,6 @@ public class YyaarrKVServiceFile implements KVService {
     }
 
     private void resetServer() {
-        // codacy:ignore
         server = null; // reset for restart
     }
 
